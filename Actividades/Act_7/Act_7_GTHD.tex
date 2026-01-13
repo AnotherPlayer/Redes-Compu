@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\lstset{
+    language=C, basicstyle=\ttfamily\small, keywordstyle=\color{blue},
+    stringstyle=\color{red}, commentstyle=\color{gray}, frame=single,
+    breaklines=true, showstringspaces=false
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \flushleft
+    \includegraphics[width=0.3\textwidth]{./../../escom.png} 
+    \vspace{2cm}\\
+    {\bfseries\LARGE Escuela Superior de Cómputo \\}
+    \vspace{3cm}
+    {\scshape\Huge Práctica 6 \\ Envío, Recepción y Filtrado de Tramas \\}
+    \vspace{3cm}
+    {\itshape\Large Redes de computadora \\}
+    \vfill
+    {\Large Autor: \\}
+    {\Large Héctor David González Tetuán \\}
+    \vfill
+    {\Large 05/01/2026 \\}
+\end{titlepage}
+
+\newpage
+
+\section*{Código en C de la función recibeTrama, sin bucle y sin filtro}
+
+\begin{lstlisting}
+
+void recibirTrama(int ds, unsigned char *trama){
+
+  int tam;
+
+    memset(trama, 0, 1514);
+    tam = recvfrom(ds, trama, 1514, 0, NULL, 0);
+
+    if(tam==-1){
+
+        perror("\nError al recibir");
+        exit(0);
+
+    }
+
+    else
+        imprimirTrama(trama, tam);
+}
+
+
+
+\end{lstlisting}
+
+\section*{Captura de pantalla}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/nBnF.png}\\
+\end{center}
+
+\newpage
+
+\section*{Código en C de la función recibeTrama, con bucle y sin filtro}
+
+\begin{lstlisting}
+
+void recibirTrama(int ds, unsigned char *trama){
+
+  int tam;
+
+    while(1){
+
+        memset(trama, 0, 1514);
+        tam = recvfrom(ds, trama, 1514, 0, NULL, 0);
+
+        if(tam==-1){
+
+            perror("\nError al recibir");
+            exit(0);
+
+        }
+
+        else{
+
+            imprimirTrama(trama, tam);
+            break;
+
+        }
+    }
+
+}
+
+\end{lstlisting}
+
+\section*{Captura de pantalla}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/sBnF.png}\\
+\end{center}
+
+\newpage
+
+\section*{Código en C de la función recibeTrama, con bucle y con filtro}
+
+\begin{lstlisting}
+
+void recibirTrama(int ds, unsigned char *trama){
+
+  int tam;
+
+    while(1){
+
+        memset(trama, 0, 1514);
+        tam = recvfrom(ds, trama, 1514, 0, NULL, 0);
+
+        if(tam==-1){
+
+            perror("\nError al recibir");
+            exit(0);
+
+        }
+
+        else{
+            if(filtros(trama)){
+                imprimirTrama(trama, tam);
+                break;
+            }
+        }
+    }
+
+}
+
+\end{lstlisting}
+
+\newpage
+
+\section*{Código en C de la función filtro}
+Orquestación de la apertura del socket, obtención de datos y ejecución de la recepción.
+
+\begin{lstlisting}
+
+bool filtros(unsigned char *trama) {
+
+    if (!(memcmp(trama + 0, MACorigen, 6)))
+        return true;
+    
+    if (!(memcmp(trama + 6, MACorigen, 6)))
+        return true;
+    
+    return false;
+}
+
+\end{lstlisting}
+
+\newpage
+
+\section*{Captura de pantalla}
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/sBsF.png}\\
+\end{center}
+
+\newpage
+
+\section*{Conclusiones}
+\justifying
+En esta práctica se integraron las funcionalidades de envío y recepción utilizando sockets crudos. Se implementó un mecanismo de filtrado manual mediante la función \texttt{filtros()}, 
+lo cual es esencial en sockets tipo \texttt{SOCK\_RAW} ya que, por defecto, estos capturan todo el tráfico que llega a la interfaz de red (modo promiscuo o todo el tráfico dirigido al host).
+El uso de comparaciones de memoria (\texttt{memcmp}) sobre el encabezado de la trama permite discriminar paquetes y procesar únicamente aquellos relevantes para nuestra aplicación, 
+simulando el comportamiento básico de un controlador de red o un firewall a nivel de enlace.
+
+\end{document}

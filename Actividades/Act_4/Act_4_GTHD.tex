@@ -1,0 +1,346 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+\begin{titlepage}
+
+    \flushleft
+    \includegraphics[width=0.3\textwidth]{./../../escom.png}
+    \vspace{2cm}\\
+    {\bfseries\LARGE Escuelas Supeior de Cómputo \\}
+    \vspace{3cm}
+    {\scshape\Huge Práctica 4 \\ Clasificación de redes de computadoras \\}
+    \vspace{3cm}
+    {\itshape\Large Redes de computadora \\}
+    \vfill
+    {\Large Autor: \\}
+    {\Large Héctor David González Tetuán \\}
+    {\Large Grupo: \\}
+    {\Large 5CM3 \\}
+    \vfill
+    {\Large 27/11/2025 \\}
+
+\end{titlepage}
+
+\newpage
+
+\section*{Redes de broadcast.}
+\begin{enumerate}[label=\arabic*.]
+
+    \item ¿Cuál es el propósito del preámbulo en una trama Ethernet?\\[0.3cm] 
+    El preámbulo se utiliza para sincronizar los relojes de los dispositivos receptores con el flujo de datos que llega.
+    \\[0.3cm]
+
+    \item ¿Qué dirección MAC se utiliza en una trama Ethernet para enviar un mensaje a todos los dispositivos en la red?\\[0.3cm] 
+    La dirección MAC de broadcast es FF:FF:FF:FF:FF:FF.
+    \\[0.3cm]
+
+    \item ¿Cuál es la longitud del campo de dirección MAC en una trama Ethernet?\\[0.3cm] 
+    Este campo de una longitud de 6 bytes (48 bits).
+    \\[0.3cm]
+
+    \item ¿Qué campo en una trama Ethernet indica el tipo de protocolo utilizado en la trama?\\[0.3cm] 
+    El campo de Ethertype indica el tipo de protocolo a usar.
+    \\[0.3cm]
+
+    \item ¿Cuál es el propósito del campo CRC (cyclic redundancy check) en una trama Ethernet?\\[0.3cm] 
+    Este campo se utiliza para detectar errores en los datos transmitidos.
+    \\[0.3cm]
+
+    \item ¿Qué tipo de dirección MAC se utiliza para dirigir una trama a un dispositivo específico en una red Ethernet?\\[0.3cm] 
+    Se utilizan direcciones MAC unicast, que identifican de manera única a cada dispositivo en la red.
+    \\[0.3cm]
+    
+    \item ¿Cuál es la función principal de una VLAN (Red de Área Local Virtual)?\\[0.3cm] 
+    Se enfoca en segmentar una red física en múltiples redes lógicas para mejorar la seguridad y el rendimiento.
+    \\[1.8cm]
+
+    \item ¿Qué tecnología se utiliza para controlar las colisiones en las redes Ethernet tradicionales?\\[0.3cm]
+    La tecnología utilizada es CSMA/CD.\\
+    Este protocolo permite que las estaciones "escuchen" el medio (dectección de portadora) antes de transmitir y, si detectan una colisión, detengan la transmisión y esperen un tiempo aleatorio antes de volver a intentarlo.
+    \\[0.3cm]
+
+    \item ¿Cuál es el propósito del campo SFD (Start Frame Delimiter) en una trama Ethernet?\\[0.3cm]
+    Señala el final de la sincronización y marca el inicio de la trama Ethernet real.
+    \\[0.3cm]
+
+    \item ¿Qué es una tormenta de broadcast en una red Ethernet y por qué es un problema?\\[0.3cm]
+    Ocurre cuando un mensaje de broadcast se reenvía continuamente dentro de una red. \\
+    Este puede ser ocasionado por algún error en la configuración o la ausencia de algún protocolo que lo prevea.
+    \\[0.3cm]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Redes punto a punto.}
+
+\begin{enumerate}[label=\arabic*.]
+    
+\item ¿Cuál es una característica fundamental de una red punto a punto?\\[0.3cm]
+Poder comunicar directamente solos dos dispositivo sin necesidad de un intermediario.
+\\[0.3cm]
+
+\item ¿Qué tipo de topología se encuentra comúnmente en una red punto a punto?\\[0.3cm]
+Las topologías más comunes son la topología en malla y la topología en anillo.
+\\[0.3cm]
+
+\item ¿Qué protocolo se utiliza comúnmente para determinar las direcciones MAC en una red punto a punto IPv4?\\[0.3cm]
+Se utiliza el Protocolo de Resolución de Direcciones (ARP).
+\\[0.3cm]
+
+\item ¿En qué capa del modelo OSI opera el enrutamiento en una red punto a punto?\\[0.3cm]
+En la capa de red (Capa 3), donde los dispositivos toman decisiones de enrutamiento basadas en direcciones IP.
+\\[0.3cm]
+
+\item ¿Cuál es el propósito de una tabla de enrutamiento en una red punto a punto?\\[0.3cm]
+Busca que un dispositivo pueda determinar cual es la mejor ruta en la cual enviar un paquete de datos hacia su destino.
+\\[0.3cm]
+
+\item En una red IPv4 se utiliza ARP para buscar a tu vecino. ¿Qué protocolo se utiliza comúnmente para descubrir vecinos en una red IPv6 punto a punto?\\[0.3cm]
+Se utiliza el Protocolo de Descubrimiento de Vecinos (Neighbor Discovery Protocol o NDP).
+\\[0.3cm]
+
+\item ¿Qué acción toma un dispositivo en una red punto a punto cuando debe enviar un paquete a un destino que está en la misma subred?\\[0.3cm]
+\begin{itemize}
+    \item Busca la dirección IP de destino en su tabla de enrutamiento.
+    \item Determina que el destino es directamente conectado.
+    \item Encapsula el paquete IP en una trama y lo envía directamente a través de la interfaz de salida hacia el vecino.
+\end{itemize}
+
+\item ¿En qué situación se utilizaría un enrutador en una red punto a punto?\\[0.3cm]
+Cada que necesitemos conectar dos redes diferentes, un enrutador es necesario para dirigir el tráfico entre ellas.
+\\[0.3cm]
+
+\item ¿Qué tipo de dirección MAC se utiliza como dirección de destino en una trama Ethernet cuando se envían datos en una red punto a punto?\\[0.3cm]
+La dirección MAC Unicast de la interfaz del dispositivo vecino.
+\\[0.3cm]
+
+\item ¿Cuál es la principal diferencia entre una red punto a punto y una red LAN?\\[0.3cm]
+Una red punto a punto conecta dos puntos con un dominio de broadcast muy pequeño; LAN conecta muchos en un gran dominio de broadcast.
+\\[0.3cm]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Redes de conmutación de circuitos.}
+
+\begin{enumerate}[label=\arabic*.]
+
+\item ¿Qué caracteriza principalmente a las redes de conmutación de circuitos?\\[0.3cm]
+Presentan conexiones física dedicadas entre dos puntos durante la duración de la comunicación.
+\\[0.3cm]
+
+\item ¿Cuál es uno de los casos de uso actuales de las redes de conmutación de circuitos?\\[0.3cm]
+La telefonía tradicional de voz fija (PSTN) y el servicio de voz ISDN (Integrated Services Digital Network).
+\\[0.3cm]
+
+\item ¿Qué tipo de tecnología se utiliza en la PSTN para la conmutación de circuitos?\\[0.3cm]
+Se utiliza la tecnología de telefonía tradicional de voz fija (PSTN) y el servicio de voz ISDN (Integrated Services Digital Network).
+\\[0.3cm]
+
+\item ¿Cuál es la principal ventaja de las redes de conmutación de circuitos para las llamadas de voz?\\[0.3cm]
+La calidad de servicio garantizada y la latencia constante y baja, ya que el ancho de banda es fijo y no se comparte.
+\\[0.3cm]
+
+\item ¿Qué función cumplen los conmutadores tándem en una red de telefonía pública conmutada?\\[0.3cm]
+Como puntos de conexicón entre diferentes conmutadores locales, facilitando la comunicación entre distintas áreas geográficas.
+\\[0.3cm]
+
+\item ¿Cuál es uno de los casos de uso de las redes de conmutación de circuitos en aplicaciones industriales?\\[0.3cm]
+Sistemas de telemetría o control en tiempo real donde la fiabilidad y la latencia predecible son críticas.
+\\[0.3cm]
+
+\item ¿Cuál es la función principal de un conmutador de tráfico en una red de telefonía pública conmutada?\\[0.3cm]
+Buscan establecer, mantener y finalizar conexiones de llamadas entre usuarios.
+\\[0.3cm]
+
+\item ¿Qué tipo de comunicación utiliza circuitos dedicados en una red de conmutación de circuitos?\\[0.3cm]
+Usan la comunicación de punto a punto con un canal dedicado para la duración de la llamada.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes aplicaciones podría utilizar una red de conmutación de circuitos en lugar de una red de conmutación de paquetes?\\[0.3cm]
+Videoconferencia de alta calidad en tiempo real (o cualquier aplicación donde la entrega oportuna y secuencial de datos es esencial).
+\\[0.3cm]
+
+\item ¿Qué tecnología se utiliza comúnmente en las redes de conmutación de circuitos para la señalización y el control de llamadas?\\[0.3cm]
+La tecnología SS7 (Signaling System No. 7) es un conjunto de protocolos para establecer, mantener y finalizar la conexión (circuito) de voz.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes tecnologías se utiliza para establecer conexiones dedicadas punto a punto en una red de conmutación de circuitos?\\[0.3cm]
+La tecnología fundamental utilizada para establecer conexiones dedicadas es la Multiplexación por División de Tiempo (TDM).
+\\[0.3cm]
+
+\item En el contexto de las redes de conmutación de circuitos, ¿qué describe mejor la función de un conmutador local?\\[0.3cm]
+La función del conmutador local es conectar directamente a los usuarios finales (suscriptores) de una zona geográfica a la red telefónica (PSTN).
+\\[0.3cm]
+
+\newpage
+
+\end{enumerate}
+
+\section*{Redes de conmutación de paquetes.}
+
+\begin{enumerate}[label=\arabic*.]
+
+\item ¿Qué caracteriza a las redes de conmutación de paquetes por transporte de datagramas?\\[0.3cm]
+Los datos se dividen en paquetes independientes que se envían a través de diferentes rutas sin establecer una conexión previa.
+\\[0.3cm]
+
+\item ¿Cuál es la unidad fundamental de datos en las redes de conmutación de paquetes por transporte de datagramas?\\[0.3cm]
+En paquetes, los cuales contienen toda la información necesaria para su enrutamiento.
+\\[0.3cm]
+
+\item ¿Qué ventaja principal ofrecen las redes de conmutación de paquetes por transporte de datagramas en términos de eficiencia de la red?\\[0.3cm]
+Permiten un uso más eficiente del ancho de banda al compartir los enlaces de red entre múltiples comunicaciones simultáneamente.
+\\[0.3cm]
+
+\item ¿Cuál es el propósito de fragmentar los datos en paquetes más pequeños en las redes de transporte de datagramas?\\[0.3cm]
+Permitir el envío de información a través de redes con diferentes capacidades de transmisión y mejorar la eficiencia al reutilizar enlaces.
+\\[0.3cm]
+
+\item ¿Qué protocolo es fundamental en las redes de transporte de datagramas para enrutar datagramas a través de la red?\\[0.3cm]
+El Protocolo de Internet (IP), que proporciona el esquema de direccionamiento y enrutamiento necesario.
+\\[0.3cm]
+
+\item ¿Cuál es una aplicación típica que se beneficia de la fragmentación de datos en redes de conmutación de paquetes por transporte de datagramas?\\[0.3cm]
+Transferencia de archivos, navegación web y aplicaciones de correo electrónico donde la velocidad es importante.
+\\[0.3cm]
+
+\item ¿Qué caracteriza a las redes de transporte de datagramas en términos de garantía de calidad de servicio (QoS)?\\[0.3cm]
+No garantizan calidad de servicio; ofrecen un servicio de "mejor esfuerzo" sin garantías de entrega o latencia.
+\\[0.3cm]
+
+\item ¿Qué ventaja proporciona la fragmentación de datos en las redes de transporte de datagramas cuando se transmiten datos a través de redes con diferentes capacidades de transmisión?\\[0.3cm]
+Permite que los paquetes se adapten al tamaño máximo permitido (MTU) de cada red, evitando pérdidas y retransmisiones.
+\\[0.3cm]
+
+\item ¿Cuál es el rol principal del Protocolo de Internet (IP) en las redes de transporte de datagramas?\\[0.3cm]
+Proporcionar direccionamiento lógico, enrutamiento de datagramas y fragmentación cuando es necesario.
+\\[0.3cm]
+
+\item ¿Qué tipo de aplicaciones es más adecuado para las redes de transporte de datagramas que utilizan la fragmentación de datos?\\[0.3cm]
+Aplicaciones que toleran cierta pérdida de paquetes o retrasos, como streaming de video, voz sobre IP y aplicaciones interactivas.
+\\[0.3cm]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Redes por su extensión.}
+
+\begin{enumerate}[label=\arabic*.]
+
+\item ¿Cuál es el alcance típico de una Red de Área Local (LAN)?\\[0.3cm]
+Una LAN típicamente cubre un área limitada, como un edificio, piso u oficina, con distancias que no superan algunos cientos de metros.
+\\[0.3cm]
+
+\item ¿Qué tecnología se utiliza comúnmente en una LAN para conectar dispositivos dentro de un edificio u oficina?\\[0.3cm]
+Se utiliza Ethernet, cableado de par trenzado (UTP) o tecnología inalámbrica WiFi (802.11).
+\\[0.3cm]
+
+\item ¿Cuál es la principal función de una Red de Área Metropolitana (MAN)?\\[0.3cm]
+Conectar múltiples LANs en un área geográfica más grande, típicamente una ciudad o campus, cubriendo distancias de varios kilómetros.
+\\[0.3cm]
+
+\item Internet es un ejemplo de una red de:\\[0.3cm]
+Escala global (WAN - Wide Area Network), que interconecta redes de todo el mundo sin limitaciones geográficas.
+\\[0.3cm]
+
+\item ¿Qué tipo de red se utiliza comúnmente para interconectar sucursales de una empresa?\\[0.3cm]
+Una Red de Área Amplia (WAN), que permite la comunicación entre oficinas ubicadas en diferentes ciudades o países.
+\\[0.3cm]
+
+\item ¿Qué es una Red Privada Virtual (VPN) en términos de alcance de red?\\[0.3cm]
+Es una red que utiliza infraestructura pública (como Internet) pero mantiene privacidad y seguridad, permitiendo comunicación segura entre sucursales o usuarios remotos.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes redes tiene un alcance aún más limitado que una LAN y se utiliza para conectar dispositivos personales cercanos?\\[0.3cm]
+Una Red de Área Personal (PAN), que típicamente cubre unos pocos metros y conecta dispositivos como computadoras, teléfonos y periféricos.
+\\[0.3cm]
+
+\item ¿Cuál es una característica clave de Internet en términos de alcance y cobertura?\\[0.3cm]
+Internet es una red global sin fronteras geográficas que interconecta millones de dispositivos a través de múltiples redes WAN y MANs.
+\\[0.3cm]
+
+\item ¿En qué escenario las redes de Área Global (GAN) son esenciales?\\[0.3cm]
+En organizaciones multinacionales que necesitan conectar oficinas en diferentes continentes con comunicaciones confiables y seguras.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes tecnologías se utiliza comúnmente en redes PAN?\\[0.3cm]
+Bluetooth, NFC (Near Field Communication) y Zigbee, que permiten comunicación de corto alcance entre dispositivos personales.
+\\[0.3cm]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Redes por su topología.}
+
+\begin{enumerate}[label=\arabic*.]
+
+\item ¿Qué topología de red se caracteriza por la conexión de todos los dispositivos a un punto central, como un concentrador o un conmutador?\\[0.3cm]
+La topología en estrella.
+\\[0.3cm]
+
+\item En una topología de red en malla, ¿cuáles son las ventajas clave?\\[0.3cm]
+Alta redundancia y confiabilidad, ya que cada dispositivo está conectado a múltiples otros dispositivos.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes topologías de red es más propensa a la congestión en el cable principal?\\[0.3cm]
+La topología en bus.
+\\[0.3cm]
+
+\item En una topología de red en árbol distribuido, ¿dónde se encuentra el punto de acceso principal?\\[0.3cm]
+En la raíz del árbol, que conecta a las subredes.
+\\[0.3cm]
+
+\item ¿Qué topología de red es más adecuada para redes empresariales con múltiples sucursales que necesitan una estructura jerárquica?\\[0.3cm]
+La topología en árbol.
+\\[0.3cm]
+
+\item En una topología de red en bus, ¿cuál es la característica principal?\\[0.3cm]
+Todos los dispositivos comparten el mismo cable de comunicación.
+\\[0.3cm]
+
+\item ¿Cuál de las siguientes topologías es adecuada para aplicaciones donde la redundancia y la confiabilidad son esenciales?\\[0.3cm]
+La topología en malla.
+\\[0.3cm]
+
+\item ¿Qué topología de red es la mejor opción si se necesita una alta escalabilidad y disponibilidad en una red de gran tamaño?\\[0.3cm]
+La topología en estrella.
+\\[0.3cm]
+
+\item En una topología de red en anillo, ¿qué ocurre si un dispositivo o enlace falla?\\[0.3cm]
+La comunicación en la red puede verse interrumpida, a menos que se implemente un mecanismo de recuperación.
+\\[0.3cm]
+
+\item ¿Cuál es una desventaja típica de la topología de red en árbol distribuido?\\[0.3cm]
+Si el nodo raíz falla, toda la red puede verse afectada.
+\\[0.3cm]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Conclusión}
+%Conclusión de la práctica de media cuartilla de página
+La realización de esta práctica ha permitido no solo explorar, sino comprender en profundidad las diversas clasificaciones que estructuran las redes de computadoras, desde los métodos de transmisión hasta su arquitectura física. Hemos podido constatar que no existe una solución única para la conectividad; por el contrario, cada tipo de red responde a necesidades específicas de tráfico, costo y cobertura.\\
+Al analizar las tecnologías de transmisión, diferenciamos cómo las redes de broadcast, ejemplificadas por estándares como Ethernet, optimizan la comunicación en entornos compartidos mediante la difusión de mensajes, mientras que las redes punto a punto garantizan enlaces dedicados y seguros, cruciales para conexiones de larga distancia o troncales. Del mismo modo, el contraste entre la conmutación de circuitos y la de paquetes nos reveló dos paradigmas distintos: la primera, ideal para comunicaciones en tiempo real que requieren latencia constante, y la segunda, que constituye la base del Internet moderno gracias a su eficiencia y robustez en el manejo de datos variables.\\
+Finalmente, el estudio de la clasificación por extensión y topología ha sido fundamental para entender la escalabilidad de los sistemas. Comprendimos que la elección de una topología (ya sea en estrella, bus o malla) no es meramente estética, sino que define la tolerancia a fallos y la facilidad de administración de la red. En conclusión, el dominio de estos conceptos teóricos es el cimiento indispensable para cualquier profesional del área, pues proporciona las herramientas necesarias para diseñar, gestionar y asegurar infraestructuras tecnológicas eficientes en un mundo cada vez más interconectado.
+
+
+\end{document}

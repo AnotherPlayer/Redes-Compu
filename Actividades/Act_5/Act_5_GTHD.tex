@@ -1,0 +1,150 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\lstset{
+    language=C, basicstyle=\ttfamily\small, keywordstyle=\color{blue},
+    stringstyle=\color{red}, commentstyle=\color{gray}, frame=single,
+    breaklines=true, showstringspaces=false
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \flushleft
+    \includegraphics[width=0.3\textwidth]{./../../escom.png} 
+    \vspace{2cm}\\
+    {\bfseries\LARGE Escuela Superior de Cómputo \\}
+    \vspace{3cm}
+    {\scshape\Huge Práctica 5 \\ Interfaz de Paquetes y Peticiones de Bajo Nivel \\}
+    \vspace{3cm}
+    {\itshape\Large Redes de computadora \\}
+    \vfill
+    {\Large Autor: \\}
+    {\Large Héctor David González Tetuán \\}
+    \vfill
+    {\Large 02/01/2026 \\}
+\end{titlepage}
+
+\newpage
+
+\section*{Apertura de un socket crudo}
+\begin{lstlisting}
+int main() {
+    int packet_socket;
+    packet_socket = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+
+    if (packet_socket == -1) {
+        perror("\nError al abrir el socket");
+        exit(0);
+    } else {
+        perror("\nExito al abrir el socket");
+    }
+    close(packet_socket);
+    return 0;
+}
+\end{lstlisting}
+
+\section*{Captura de pantalla: Apertura de socket}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/Exito_Socket.png}\\
+\end{center}
+
+\newpage
+
+\section*{Obtención del índice de la interfaz (SIOCGIFINDEX)}
+\begin{lstlisting}
+if (ioctl(ds, SIOCGIFINDEX, &nic) == -1) {
+    perror("\nError al obtener el index");
+    exit(0);
+}
+int indice = nic.ifr_ifindex;
+printf("\nEl indice es: %d", indice);
+\end{lstlisting}
+
+\section*{Captura de pantalla: Índice de la interfaz}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/Indice.png}\\
+\end{center}
+
+\newpage
+
+\section*{Obtención de la dirección física (SIOCGIFHWADDR)}
+\begin{lstlisting}
+if (ioctl(ds, SIOCGIFHWADDR, &nic) == -1) {
+    perror("\nError al obtener la MAC");
+    exit(0);
+}
+unsigned char MACorigen[6];
+memcpy(MACorigen, nic.ifr_hwaddr.sa_data, 6);
+printf("\nLa MAC es: %02x:%02x:%02x:%02x:%02x:%02x", 
+        MACorigen[0], MACorigen[1], MACorigen[2], 
+        MACorigen[3], MACorigen[4], MACorigen[5]);
+\end{lstlisting}
+
+\section*{Captura de pantalla: Dirección MAC}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/MAC.png}\\
+\end{center}
+
+\newpage
+
+\section*{Obtención de la dirección lógica (SIOCGIFADDR)}
+\begin{lstlisting}
+if (ioctl(ds, SIOCGIFADDR, &nic) == -1) {
+    perror("\nError al obtener la Direccion IP");
+    exit(0);
+}
+struct sockaddr_in *ip = (struct sockaddr_in *)&nic.ifr_addr;
+unsigned char IPorigen[4];
+memcpy(IPorigen, &ip->sin_addr, 4);
+printf("\nLa Direccion IP es: %d.%d.%d.%d", 
+        IPorigen[0], IPorigen[1], IPorigen[2], IPorigen[3]);
+\end{lstlisting}
+
+\section*{Captura de pantalla: Dirección IP}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/DirrIP.png}\\
+\end{center}
+
+\newpage
+
+\section*{Obtención de la máscara de subred (SIOCGIFNETMASK)}
+\begin{lstlisting}
+if (ioctl(ds, SIOCGIFNETMASK, &nic) == -1) {
+    perror("\nError al obtener la Mascara de Subred");
+    exit(0);
+}
+struct sockaddr_in *mascara = (struct sockaddr_in *)&nic.ifr_netmask;
+unsigned char MascaraDeSubred[4];
+memcpy(MascaraDeSubred, &mascara->sin_addr, 4);
+printf("\nLa Mascara de Subred es: %d.%d.%d.%d\n", 
+        MascaraDeSubred[0], MascaraDeSubred[1], 
+        MascaraDeSubred[2], MascaraDeSubred[3]);
+\end{lstlisting}
+
+\section*{Captura de pantalla: Máscara de subred}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/Subred.png}\\
+\end{center}
+
+\newpage
+
+\section*{Conclusiones}
+\justifying
+La implementación de sockets crudos permite un acceso directo a las capas inferiores del modelo OSI, facilitando la manipulación de tramas de red y la obtención de parámetros críticos de configuración. Mediante el uso de la estructura \texttt{ifreq} y las llamadas al sistema \texttt{ioctl}, es posible consultar información administrativa y técnica de las interfaces de red de forma programática. Esta capacidad es fundamental para el desarrollo de herramientas de diagnóstico, monitoreo y protocolos personalizados en sistemas operativos basados en Linux.
+
+\end{document}

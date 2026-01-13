@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\lstset{
+    language=C, basicstyle=\ttfamily\small, keywordstyle=\color{blue},
+    stringstyle=\color{red}, commentstyle=\color{gray}, frame=single,
+    breaklines=true, showstringspaces=false
+}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \flushleft
+    \includegraphics[width=0.3\textwidth]{./../../escom.png} 
+    \vspace{2cm}\\
+    {\bfseries\LARGE Escuela Superior de Cómputo \\}
+    \vspace{3cm}
+    {\scshape\Huge Práctica 6 \\ Envío de Datos a Bajo Nivel \\}
+    \vspace{3cm}
+    {\itshape\Large Redes de computadora \\}
+    \vfill
+    {\Large Autor: \\}
+    {\Large Héctor David González Tetuán \\}
+    \vfill
+    {\Large 02/01/2026 \\}
+\end{titlepage}
+
+\newpage
+
+\section*{Definición de parámetros de la trama}
+\begin{lstlisting}
+unsigned char MACbroadcast[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+unsigned char ethertype[2] = {0x0c, 0x0c};
+unsigned char tramaEnv[1514];
+\end{lstlisting}
+
+\section*{Estructura de la trama (Capa de Enlace)}
+\begin{lstlisting}
+void estructuraTrama(unsigned char *trama) {
+
+    memcpy(trama + 0, MACbroadcast, 6);
+    memcpy(trama + 6, MACorigen, 6);
+    memcpy(trama + 12, ethertype, 2);
+    memcpy(trama + 14, "Tetuan", 7);
+
+}
+\end{lstlisting}
+
+\section*{Captura de pantalla: Definición de trama}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/Enviar_trama.png}\\
+\end{center}
+
+\newpage
+
+\section*{Proceso de envío mediante sendto}
+\begin{lstlisting}
+void enviarTrama(int ds, int index, unsigned char *trama) {
+
+    int tam;
+    struct sockaddr_ll interfaz;
+    memset(&interfaz, 0x00, sizeof(interfaz));
+    
+    interfaz.sll_family = AF_PACKET;
+    interfaz.sll_protocol = htons(ETH_P_ALL);
+    interfaz.sll_ifindex = index;
+    
+    // Envio de la trama de 60 bytes
+    tam = sendto(ds, trama, 60, 0, (struct sockaddr *)&interfaz, sizeof(interfaz));
+
+    if (tam == -1) {
+        perror("\nError al enviar");
+        exit(1);
+    } else {
+        perror("\nExito al enviar");
+    }
+}
+\end{lstlisting}
+
+\section*{Captura de pantalla: Éxito al enviar}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{./img/interfazWS.png}\\
+\end{center}
+
+\newpage
+
+\section*{Captura de pantalla: Análisis en Wireshark}
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{./img/WS.png}\\
+\end{center}
+
+\newpage
+
+\section*{Conclusiones}
+\justifying
+El envío de tramas mediante sockets crudos proporciona un control total sobre el encabezado de la capa de enlace, permitiendo la creación de protocolos personalizados y la manipulación de direcciones MAC de forma directa.
+Mediante el uso de la función \texttt{sendto} y la estructura \texttt{sockaddr\_ll}, es posible dirigir tráfico a interfaces específicas utilizando su índice, lo que garantiza que los datos salgan por el hardware correcto.
+Esta práctica demuestra la importancia de comprender la encapsulación de datos, donde el payload se coloca inmediatamente después del encabezado Ethernet, permitiendo una comunicación eficiente en el dominio de broadcast de la red local.
+
+\end{document}
