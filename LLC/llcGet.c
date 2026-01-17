@@ -61,7 +61,7 @@ void obtenDatos(int ds){
 
 void imprimeTrama(unsigned char *trama, int tam){
 
-    printf("\n--- Contenido del Paquete (%d bytes) ---", tam);
+    printf("\n--- Contenido del Paquete (%d bytes) ---\n", tam);
 
     for(int i=0; i<tam; i++){
 
@@ -71,13 +71,25 @@ void imprimeTrama(unsigned char *trama, int tam){
         printf("%.2x ", trama[i]);
     }
 
-    printf("\n");
+    printf("\n----------------------------------------\n");
 
-    printf("MAC origen: ");
-    printf("MAC destino: ");
+    printf("MAC destino: %02x:%02x:%02x:%02x:%02x:%02x\n", 
+            trama[0], trama[1], trama[2], trama[3], trama[4], trama[5]);
 
-    printf("IP origen: ");
-    printf("IP destino: ");
+    printf("MAC origen:  %02x:%02x:%02x:%02x:%02x:%02x\n", 
+            trama[6], trama[7], trama[8], trama[9], trama[10], trama[11]);
+
+
+    printf("IP origen:   %d.%d.%d.%d\n", 
+            trama[26], trama[27], trama[28], trama[29]);
+
+    printf("IP destino:  %d.%d.%d.%d\n", 
+            trama[30], trama[31], trama[32], trama[33]);
+
+    printf("Mensaje:     %s\n", trama + 17);
+
+    printf("----------------------------------------\n");
+
 
 }
 
@@ -91,7 +103,7 @@ int recibeTramaLLC(int ds, unsigned char *trama){
     
     gettimeofday(&start,NULL);
 
-    while(mtime < 500){
+    while(mtime < 1000){
 
         memset(trama, 0, 1514);
 
@@ -133,8 +145,10 @@ int main(){
     packet_socket = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 
     if(packet_socket == -1){
+
         perror("\nError al abrir el socket (necesitas sudo)");
         exit(0);
+
     }
 
     else{
