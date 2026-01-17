@@ -73,6 +73,12 @@ void imprimeTrama(unsigned char *trama, int tam){
 
     printf("\n");
 
+    printf("MAC origen: ");
+    printf("MAC destino: ");
+
+    printf("IP origen: ");
+    printf("IP destino: ");
+
 }
 
 int recibeTramaLLC(int ds, unsigned char *trama){

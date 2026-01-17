@@ -82,11 +82,13 @@ int obtenDatos(int ds) {
 }
 
 void imprimeTrama(unsigned char *trama, int tam) {
+
     for (int i = 0; i < tam; i++) {
         if (i % 16 == 0) printf("\n");
         printf("%.2x ", trama[i]);
     }
     printf("\n");
+    
 }
 
 int main() {
